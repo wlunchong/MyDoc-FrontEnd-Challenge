@@ -1,8 +1,10 @@
 import React from "react";
 import "../index.css";
 import {getCharacterImageURL} from "../services";
+import {connect} from "react-redux";
+import {saveCharacterAction, unsaveCharacterAction} from "../actions/favouriteAction";
 
-export class CharacterDetails extends React.Component {
+class CharacterDetails extends React.Component {
     renderDetailsByLabel = ({label, value, isLink}, index) => {
 
         const renderExternalLink = (link) => {
@@ -32,10 +34,10 @@ export class CharacterDetails extends React.Component {
                 </div>
             </div>
         )
-    }
+    };
 
     render() {
-        const {character, onCharacterSelect} = this.props;
+        const {character, onCharacterSelect, savedCharacters, saveCharacterAction, unsaveCharacterAction} = this.props;
         const details = [
             {label: "Name", value: character.name},
             {label: "Description", value: character.description},
@@ -49,6 +51,8 @@ export class CharacterDetails extends React.Component {
                 details.push({label: url.type, value: url.url, isLink: true})
             })
         }
+        const isCharacterSaved = savedCharacters.find(sCharacter => sCharacter.id === character.id);
+
         return (
             <div className="overlay-container">
                 <div className="details-container">
@@ -57,8 +61,24 @@ export class CharacterDetails extends React.Component {
                     {details
                         .filter(d => d.value && !!d.value.length ? d : false)
                         .map((d, index) => this.renderDetailsByLabel(d, index))}
+                    <div className="text-center">
+                        <button className="btn-save" onClick={() => isCharacterSaved ? unsaveCharacterAction(character) : saveCharacterAction(character)}>
+                            {isCharacterSaved ? "Unsave" : "Save"}  Character
+                        </button>
+                    </div>
                 </div>
             </div>
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        savedCharacters: state.favourite.savedCharacters
+    }
+};
+
+export default connect(
+    mapStateToProps,
+    {saveCharacterAction, unsaveCharacterAction}
+)(CharacterDetails);

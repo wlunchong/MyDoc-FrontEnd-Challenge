@@ -25,6 +25,10 @@ html,body {
     border-radius: 2px;
 }
 
+.text-center {
+    text-align: center;
+}
+
 /* Home Page*/
 .home {
     text-align: center;
@@ -202,4 +206,15 @@ html,body {
 
 .details-container a {
     color: cornflowerblue;
+}
+
+.details-container .btn-save {
+    background: #f31536;
+    color: white;
+    border: 1px solid red;
+    box-shadow: none;
+    border-radius: 5px;
+    padding: 10px 30px;
+    min-width: 150px;
+    cursor: pointer;
 }

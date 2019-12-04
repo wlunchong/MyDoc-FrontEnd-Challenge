@@ -1,13 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
 import { debounce } from 'throttle-debounce';
 
 import "../index.css";
 import {CharacterList} from "../components/characterList";
 import {AutoCompleteContainer} from "../components/autoCompleteContainer";
-import {CharacterDetails} from "../components/characterDetails";
+import CharacterDetails from "../components/characterDetails";
 
-class Home extends React.Component {
+export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -133,13 +132,11 @@ class Home extends React.Component {
                         {currentPageNo > 1 && <button onClick={() => this.goToPage(currentPageNo-1)}>Prev</button>}
                         {results && currentPageNo * 3 < results.length && <button onClick={() => this.goToPage(currentPageNo + 1)}>Next</button>}
                     </div>
-                {selectedCharacter && <CharacterDetails character={selectedCharacter} onCharacterSelect={this.toggleCharacterDetails}/>}
+                {selectedCharacter &&
+                <CharacterDetails
+                    character={selectedCharacter}
+                    onCharacterSelect={this.toggleCharacterDetails}/>}
             </div>
         );
     }
 }
-
-export default connect(
-    null,
-    {}
-)(Home);
