@@ -7,7 +7,7 @@ export class AutoCompleteContainer extends React.Component {
     renderList = (data) => {
         const {onKeywordSelect} = this.props;
         return (
-            <div className="result-row" key={data.id} onClick={() => onKeywordSelect(data, true)}>
+            <div className="result-row" key={data.id} onClick={() => onKeywordSelect(data.name, false)}>
                 <div className="character-profile-pic" style={{backgroundImage: `url(${getCharacterImageURL(data)}`}}/>
                 <div>{data.name}</div>
             </div>

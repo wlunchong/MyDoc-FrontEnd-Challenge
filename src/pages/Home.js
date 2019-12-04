@@ -15,13 +15,12 @@ export default class Home extends React.Component {
             keyword: "",
             loading: false,
             showAutoComplete: true,
-            results: null,
             currentPageNo: 1,
             selectedCharacter: null
         };
 
         // debounce search, fire when user stop typing for 300ms
-        this.debouncedSearchTerm = debounce(300, this.searchCharacter);
+        this.debouncedSearchTerm = debounce(500, this.searchCharacter);
     }
 
     setKeywordAndList = (keyword = "", list = null) => {
@@ -32,7 +31,7 @@ export default class Home extends React.Component {
         this.setState({loading})
     };
 
-    getCharactersList = (link) => {
+    getCharactersList = (link, keyword) => {
         return new Promise(async resolve => {
             try {
                 this.toggleLoading(true);
@@ -42,49 +41,39 @@ export default class Home extends React.Component {
 
                 this.toggleLoading(false)
 
-                resolve(respToJSON.data.results)
+                resolve({data: respToJSON.data.results, keyWordFromCurrentResult: keyword})
             } catch (e) {
-                resolve([])
+                resolve({data: [], keyWordFromCurrentResult: ""})
             }
 
         })
     };
 
-    searchCharacter = async (value = this.state.keyword, shouldCloseAutoComplete = false) => {
-        if (!value) {
+    searchCharacter = async () => {
+        const {keyword} = this.state;
+        if (!keyword) {
             this.setKeywordAndList();
             return
         };
 
-        const keyword = typeof(value) === "object" ? value.name : value;
+        const {data, keyWordFromCurrentResult} = await this.getCharactersList(`${this.state.getCharactersAPI}&limit=18&nameStartsWith=${keyword}`, keyword);
+        if (keyWordFromCurrentResult !== this.state.keyword) {
+            return
+        };
 
-        if (shouldCloseAutoComplete) {
-            this.setState({
-                showAutoComplete: false
-            })
-        } else if (!this.state.showAutoComplete && !shouldCloseAutoComplete) {
-            this.setState({
-                showAutoComplete: true
-            })
-        }
-
-        const resp = await this.getCharactersList(`${this.state.getCharactersAPI}&limit=18&nameStartsWith=${keyword}`);
-        this.setKeywordAndList(keyword, resp)
-
-        if (shouldCloseAutoComplete) {
-            this.setState({results: resp})
-        }
+        this.setKeywordAndList(keyword, data)
     };
 
-    onSearchInputChange = (event) => {
+    onSearchInputChange = (name, showAutoComplete = true) => {
         this.setState({
-            keyword: event.target.value
+            keyword: name,
+            showAutoComplete
         }, () => {
             this.debouncedSearchTerm()
         })
     };
 
-    getResult = (results) => {
+    getCurrentList = (list) => {
        const {currentPageNo} = this.state;
        let startIndex = 0;
        let endIndex = 0;
@@ -92,18 +81,13 @@ export default class Home extends React.Component {
            startIndex = (currentPageNo - 1) * 3
        }
 
-       endIndex = startIndex + 3
+       endIndex = startIndex + 3;
 
-        return results.slice(startIndex, endIndex)
+        return list.slice(startIndex, endIndex)
     };
 
     goToPage = (page) => {
         this.setState({currentPageNo: page})
-    };
-
-    onFormSubmit = (e) => {
-        e.preventDefault();
-        this.searchCharacter(this.state.keyword, true)
     };
 
     toggleCharacterDetails = (selectedCharacter) => {
@@ -112,11 +96,25 @@ export default class Home extends React.Component {
         })
     };
 
+    onFormSubmit = (e) => {
+        e.preventDefault();
+       this.setState({
+           showAutoComplete: false
+       }, () => this.searchCharacter())
+    };
+
+    closeAutoComplete = () => {
+        if (this.state.showAutoComplete) {
+            this.setState({
+                showAutoComplete: false
+            })
+        }
+    };
 
     render() {
-        const {keyword, list, loading, showAutoComplete, results, currentPageNo, selectedCharacter} = this.state;
+        const {keyword, list, loading, showAutoComplete, currentPageNo, selectedCharacter} = this.state;
         return (
-            <div className="home container">
+            <div className="home container" onClick={this.closeAutoComplete}>
                 <Link to="/saved">
                     <button className="btn-save btn-nav">
                         View Saved
@@ -128,15 +126,19 @@ export default class Home extends React.Component {
                                value={keyword}
                                className="search-input"
                                placeholder="Search Your Hero"
-                               onChange={this.onSearchInputChange}/>
-                        {!loading && showAutoComplete && <AutoCompleteContainer keyword={keyword} list={list} onKeywordSelect={this.searchCharacter}/>}
+                               onChange={(e) => this.onSearchInputChange(e.target.value)}/>
+                        {!loading && showAutoComplete && <AutoCompleteContainer keyword={keyword} list={list} onKeywordSelect={this.onSearchInputChange}/>}
                     </div>
                 </form>
-                {results && <CharacterList list={this.getResult(results)} onCharacterSelect={this.toggleCharacterDetails}/>}
-                    <div className="buttons-row">
-                        {currentPageNo > 1 && <button onClick={() => this.goToPage(currentPageNo-1)}>Prev</button>}
-                        {results && currentPageNo * 3 < results.length && <button onClick={() => this.goToPage(currentPageNo + 1)}>Next</button>}
-                    </div>
+                <div className="character-list-container">
+                    {list && !loading && <CharacterList list={this.getCurrentList(list)} onCharacterSelect={this.toggleCharacterDetails}/>}
+                    {loading && <div className="loading">Loading...</div>}
+                </div>
+                {!loading &&
+                <div className="buttons-row">
+                    {currentPageNo > 1 && <button onClick={() => this.goToPage(currentPageNo-1)}>Prev</button>}
+                    {list && currentPageNo * 3 < list.length && <button onClick={() => this.goToPage(currentPageNo + 1)}>Next</button>}
+                </div>}
                 {selectedCharacter &&
                 <CharacterDetails
                     character={selectedCharacter}
