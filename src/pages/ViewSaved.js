@@ -7,6 +7,7 @@ import { unsaveCharacterAction} from "../actions/viewSavedAction";
 import {Link} from "react-router-dom";
 
 class ViewSaved extends React.Component {
+    // function to delete character
     deleteCharacter = (character) => {
         const res = window.confirm(`Are you sure you want to delete ${character.name}?`);
         res && this.props.unsaveCharacterAction(character);

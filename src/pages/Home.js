@@ -23,14 +23,18 @@ export default class Home extends React.Component {
         this.debouncedSearchTerm = debounce(500, this.searchCharacter);
     }
 
+    // set keyword and result list
     setKeywordAndList = (keyword = "", list = null) => {
         this.setState({keyword, list, currentPageNo: 1})
     };
 
+    // show or hide loading
     toggleLoading = (loading = !this.state.loading) => {
         this.setState({loading})
     };
 
+    // promise function to call Marvel API by passing URL and keyword
+    // keyword will be return with data to compare whether keyword is latest
     getCharactersList = (link, keyword) => {
         return new Promise(async resolve => {
             try {
@@ -49,6 +53,7 @@ export default class Home extends React.Component {
         })
     };
 
+    // function to check keyword and update relevant data conditionally
     searchCharacter = async () => {
         const {keyword} = this.state;
         if (!keyword) {
@@ -64,6 +69,7 @@ export default class Home extends React.Component {
         this.setKeywordAndList(keyword, data)
     };
 
+    // onChangeEvent from search input
     onSearchInputChange = (name, showAutoComplete = true) => {
         this.setState({
             keyword: name,
@@ -73,6 +79,7 @@ export default class Home extends React.Component {
         })
     };
 
+    // function to get result by pageNo
     getCurrentList = (list) => {
        const {currentPageNo} = this.state;
        let startIndex = 0;
@@ -86,16 +93,19 @@ export default class Home extends React.Component {
         return list.slice(startIndex, endIndex)
     };
 
+    // function to go to either next or prev page
     goToPage = (page) => {
         this.setState({currentPageNo: page})
     };
 
+    // show or hide character detail container
     toggleCharacterDetails = (selectedCharacter) => {
         this.setState({
             selectedCharacter
         })
     };
 
+    // form submit event. Allow user to perform instant search by click enter button
     onFormSubmit = (e) => {
         e.preventDefault();
        this.setState({
@@ -103,6 +113,7 @@ export default class Home extends React.Component {
        }, () => this.searchCharacter())
     };
 
+    // close auto complete container when user click anywhere of page
     closeAutoComplete = () => {
         if (this.state.showAutoComplete) {
             this.setState({
@@ -127,7 +138,7 @@ export default class Home extends React.Component {
                                className="search-input"
                                placeholder="Search Your Hero"
                                onChange={(e) => this.onSearchInputChange(e.target.value)}/>
-                        {!loading && showAutoComplete && <AutoCompleteContainer keyword={keyword} list={list} onKeywordSelect={this.onSearchInputChange}/>}
+                        {!loading && showAutoComplete && <AutoCompleteContainer list={list} onKeywordSelect={this.onSearchInputChange}/>}
                     </div>
                 </form>
                 <div className="character-list-container">
@@ -142,7 +153,7 @@ export default class Home extends React.Component {
                 {selectedCharacter &&
                 <CharacterDetails
                     character={selectedCharacter}
-                    onCharacterSelect={this.toggleCharacterDetails}/>}
+                    close={this.toggleCharacterDetails}/>}
             </div>
         );
     }

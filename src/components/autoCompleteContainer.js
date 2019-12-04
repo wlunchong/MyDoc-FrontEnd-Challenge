@@ -2,8 +2,15 @@ import React from "react";
 import "../index.css";
 import {getCharacterImageURL} from "../services/index";
 
-export class AutoCompleteContainer extends React.Component {
+// Container that show suggestion based on user input
 
+// Props
+// ======
+// list: array. suggestion list from Marvel api
+// onKeywordSelect: function. callback when user select from suggestion list
+
+export class AutoCompleteContainer extends React.Component {
+    // function render character details
     renderList = (data) => {
         const {onKeywordSelect} = this.props;
         return (
@@ -15,8 +22,8 @@ export class AutoCompleteContainer extends React.Component {
     }
 
     render() {
-        const {keyword, list} = this.props;
-        if (!keyword || !list) {
+        const {list} = this.props;
+        if (!list) {
             return null
         }
 

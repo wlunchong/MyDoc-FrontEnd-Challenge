@@ -4,6 +4,13 @@ import {getCharacterImageURL} from "../services";
 import {connect} from "react-redux";
 import {saveCharacterAction, unsaveCharacterAction} from "../actions/viewSavedAction";
 
+// Component that show detail of character
+//
+// Props
+// =====
+// character: Obj. Contain details of character such as id, name, picture, comics...
+// close: Func. Function that callback when user close current component
+
 class CharacterDetails extends React.Component {
     renderDetailsByLabel = ({label, value, isLink}, index) => {
 
@@ -37,7 +44,8 @@ class CharacterDetails extends React.Component {
     };
 
     render() {
-        const {character, onCharacterSelect, savedCharacters, saveCharacterAction, unsaveCharacterAction} = this.props;
+        const {character, close, savedCharacters, saveCharacterAction, unsaveCharacterAction} = this.props;
+        // select and format label that should show in details page
         const details = [
             {label: "Name", value: character.name},
             {label: "Description", value: character.description},
@@ -51,12 +59,14 @@ class CharacterDetails extends React.Component {
                 details.push({label: url.type, value: url.url, isLink: true})
             })
         }
+
+        // boolean to indicate current character is saved by user before
         const isCharacterSaved = savedCharacters.find(sCharacter => sCharacter.id === character.id);
 
         return (
             <div className="overlay-container">
                 <div className="details-container">
-                    <button className="btn-close" onClick={() => onCharacterSelect()}>x</button>
+                    <button className="btn-close" onClick={() => close()}>x</button>
                     <div className="character-profile-pic" style={{backgroundImage: `url(${getCharacterImageURL(character)})`}}/>
                     {details
                         .filter(d => d.value && !!d.value.length ? d : false)

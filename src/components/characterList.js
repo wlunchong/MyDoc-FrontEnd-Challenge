@@ -1,8 +1,16 @@
 import React from "react";
 import "../index.css";
+import {getCharacterImageURL} from "../services";
+
+// Component that show list of character
+// Props
+// =====
+// onCharacterSelect: Func.  Callback when user click on character.
+// showDelete: Boolean. Whether to show delete option or not
 
 export class CharacterList extends React.Component {
 
+    // function to render character
     renderCharacter = (character) => {
         const {onCharacterSelect, showDelete} = this.props;
 
@@ -10,7 +18,7 @@ export class CharacterList extends React.Component {
             <div key={character.id}
                  onClick={() => onCharacterSelect(character)}
                  className="character-container"
-                 style={{backgroundImage: `url(${character.thumbnail.path}.${character.thumbnail.extension})`}}>
+                 style={{backgroundImage: `url(${getCharacterImageURL(character)}`}}>
                 {showDelete &&
                     <div className="delete-overlay">Delete</div>
                 }

@@ -1,5 +1,6 @@
+// Function to retrieve character Thumbnail
 export const getCharacterImageURL = (character) => {
-    if (!character) return ""
+    if (!character) return "";
 
     return `${character.thumbnail.path}.${character.thumbnail.extension}`
 };
