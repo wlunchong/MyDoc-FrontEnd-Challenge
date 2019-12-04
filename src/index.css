@@ -70,7 +70,7 @@ html,body {
 .character-list .character-container {
     position: relative;
     background-position: center;
-    background-size: 100%;
+    background-size: 100% 100%;
     padding-bottom: 90%;
     border-radius: 2px;
     transition: .3s
@@ -78,7 +78,7 @@ html,body {
 
 .character-list .character-container:hover {
     cursor: pointer;
-    background-size: 110%;
+    background-size: 110% 110%;
 }
 
 .character-list .character-container .name {
