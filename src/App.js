@@ -2,6 +2,7 @@ import React from 'react';
 import './index.css';
 
 import Home from "./pages/Home";
+import ViewSaved from "./pages/ViewSaved";
 
 // Install react-router-dom to switch between pages
 import { BrowserRouter, Route } from "react-router-dom";
@@ -11,9 +12,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Route exact path="/" component={Home}/>
-        <Route path="/favourite">
-          <h1>Favourite</h1>
-        </Route>
+        <Route path="/saved" component={ViewSaved}/>
       </BrowserRouter>
     </div>
   );

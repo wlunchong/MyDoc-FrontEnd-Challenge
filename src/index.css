@@ -5,14 +5,15 @@ html,body {
 
 .App {
     height: 100vh;
+    overflow: auto;
 }
 
 .App .container {
     padding: 30px;
-    height: calc(100% - 60px);
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
 }
 
 .container-flex-vertical >*:not(:last-child) {
@@ -27,6 +28,17 @@ html,body {
 
 .text-center {
     text-align: center;
+}
+
+.btn-nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.btn-home {
+    background-color: #09d3ac !important;
+    border: none !important;
 }
 
 /* Home Page*/
@@ -64,6 +76,11 @@ html,body {
     cursor: pointer;
 }
 
+/*View Saved*/
+.view-saved .character-list {
+    margin-top: 5%;
+}
+
 /*Character List*/
 .character-list {
     display: grid;
@@ -85,6 +102,10 @@ html,body {
     background-size: 110% 110%;
 }
 
+.character-list .character-container:hover .delete-overlay {
+    opacity: 1;
+}
+
 .character-list .character-container .name {
     position: absolute;
     bottom: 0;
@@ -94,6 +115,23 @@ html,body {
     text-align: center;
     background: rgba(0, 0, 0, .5);
     color: white;
+}
+
+.character-container .delete-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.6);
+    display: flex;
+    color: black;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-weight: bold;
+    font-size: 1.3rem;
+    opacity: 0;
 }
 
 /*Auto Complete Container*/
@@ -208,7 +246,7 @@ html,body {
     color: cornflowerblue;
 }
 
-.details-container .btn-save {
+.btn-save {
     background: #f31536;
     color: white;
     border: 1px solid red;

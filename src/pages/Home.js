@@ -1,5 +1,6 @@
 import React from "react";
 import { debounce } from 'throttle-debounce';
+import {Link} from "react-router-dom";
 
 import "../index.css";
 import {CharacterList} from "../components/characterList";
@@ -113,10 +114,14 @@ export default class Home extends React.Component {
 
 
     render() {
-        window.a = this;
         const {keyword, list, loading, showAutoComplete, results, currentPageNo, selectedCharacter} = this.state;
         return (
             <div className="home container">
+                <Link to="/saved">
+                    <button className="btn-save btn-nav">
+                        View Saved
+                    </button>
+                </Link>
                 <form onSubmit={this.onFormSubmit}>
                     <div className="search-box-row">
                         <input type="text"

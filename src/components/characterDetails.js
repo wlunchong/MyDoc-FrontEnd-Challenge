@@ -2,7 +2,7 @@ import React from "react";
 import "../index.css";
 import {getCharacterImageURL} from "../services";
 import {connect} from "react-redux";
-import {saveCharacterAction, unsaveCharacterAction} from "../actions/favouriteAction";
+import {saveCharacterAction, unsaveCharacterAction} from "../actions/viewSavedAction";
 
 class CharacterDetails extends React.Component {
     renderDetailsByLabel = ({label, value, isLink}, index) => {
