@@ -14,7 +14,7 @@ class Home extends React.Component {
             keyword: "",
             loading: false,
             showAutoComplete: true,
-            results: [],
+            results: null,
             currentPageNo: 1
         };
 
@@ -120,10 +120,10 @@ class Home extends React.Component {
                         {!loading && showAutoComplete && <AutoCompleteContainer keyword={keyword} list={list} onKeywordSelect={this.searchCharacter}/>}
                     </div>
                 </form>
-                {!!results.length && <CharacterList list={this.getResult(results)}/>}
+                {results && <CharacterList list={this.getResult(results)}/>}
                     <div className="buttons-row">
                         {currentPageNo > 1 && <button onClick={() => this.goToPage(currentPageNo-1)}>Prev</button>}
-                        {currentPageNo * 3 < results.length && <button onClick={() => this.goToPage(currentPageNo + 1)}>Next</button>}
+                        {results && currentPageNo * 3 < results.length && <button onClick={() => this.goToPage(currentPageNo + 1)}>Next</button>}
                     </div>
             </div>
         );

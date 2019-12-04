@@ -12,7 +12,7 @@ export class CharacterList extends React.Component {
 
     render() {
         const {list, errorMsg} = this.props;
-        if (!list || !list.length) {
+        if (!list.length) {
             return (
                 <div>
                     {errorMsg || "No Character available" }
