@@ -5,6 +5,7 @@ import { debounce } from 'throttle-debounce';
 import "../index.css";
 import {CharacterList} from "../components/characterList";
 import {AutoCompleteContainer} from "../components/autoCompleteContainer";
+import {CharacterDetails} from "../components/characterDetails";
 
 class Home extends React.Component {
     constructor(props) {
@@ -15,7 +16,8 @@ class Home extends React.Component {
             loading: false,
             showAutoComplete: true,
             results: null,
-            currentPageNo: 1
+            currentPageNo: 1,
+            selectedCharacter: null
         };
 
         // debounce search, fire when user stop typing for 300ms
@@ -104,10 +106,16 @@ class Home extends React.Component {
         this.searchCharacter(this.state.keyword, true)
     };
 
+    toggleCharacterDetails = (selectedCharacter) => {
+        this.setState({
+            selectedCharacter
+        })
+    };
+
 
     render() {
         window.a = this;
-        const {keyword, list, loading, showAutoComplete, results, currentPageNo} = this.state;
+        const {keyword, list, loading, showAutoComplete, results, currentPageNo, selectedCharacter} = this.state;
         return (
             <div className="home container">
                 <form onSubmit={this.onFormSubmit}>
@@ -120,11 +128,12 @@ class Home extends React.Component {
                         {!loading && showAutoComplete && <AutoCompleteContainer keyword={keyword} list={list} onKeywordSelect={this.searchCharacter}/>}
                     </div>
                 </form>
-                {results && <CharacterList list={this.getResult(results)}/>}
+                {results && <CharacterList list={this.getResult(results)} onCharacterSelect={this.toggleCharacterDetails}/>}
                     <div className="buttons-row">
                         {currentPageNo > 1 && <button onClick={() => this.goToPage(currentPageNo-1)}>Prev</button>}
                         {results && currentPageNo * 3 < results.length && <button onClick={() => this.goToPage(currentPageNo + 1)}>Next</button>}
                     </div>
+                {selectedCharacter && <CharacterDetails character={selectedCharacter} onCharacterSelect={this.toggleCharacterDetails}/>}
             </div>
         );
     }

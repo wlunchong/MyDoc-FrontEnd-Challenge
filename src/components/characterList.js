@@ -2,9 +2,15 @@ import React from "react";
 import "../index.css";
 
 export class CharacterList extends React.Component {
+
     renderCharacter = (character) => {
+        const {onCharacterSelect} = this.props;
+
         return (
-            <div key={character.id} className="character-container" style={{backgroundImage: `url(${character.thumbnail.path}.${character.thumbnail.extension})`}}>
+            <div key={character.id}
+                 onClick={() => onCharacterSelect(character)}
+                 className="character-container"
+                 style={{backgroundImage: `url(${character.thumbnail.path}.${character.thumbnail.extension})`}}>
                 <div className="name">{character.name}</div>
             </div>
         )
