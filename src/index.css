@@ -1,1 +1,130 @@
+html,body {
+    margin: 0;
+    padding: 0;
+}
 
+.App {
+    height: 100vh;
+}
+
+.App .container {
+    padding: 30px;
+    height: calc(100% - 60px);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container-flex-vertical >*:not(:last-child) {
+    margin-bottom: 30px;
+}
+
+/* Home Page*/
+.home {
+    text-align: center;
+}
+
+.home.container >*:not(:last-child) {
+    margin-bottom: 30px;
+}
+
+.search-box-row {
+    position: relative;
+    margin-top: 5%;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-box-row .search-input {
+    width: calc(100% - 24px);
+    padding: 10px;
+    border: 1px solid #e3e3e3;
+}
+
+.buttons-row button + button {
+    margin-left: 30px;
+}
+
+.buttons-row button {
+    border: 1px solid #00000052;
+    background: white;
+    padding: 5px 20px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+/*Character List*/
+.character-list {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 20px 30px;
+}
+
+.character-list .character-container {
+    position: relative;
+    background-position: center;
+    background-size: 100%;
+    padding-bottom: 90%;
+    border-radius: 2px;
+    transition: .3s
+}
+
+.character-list .character-container:hover {
+    cursor: pointer;
+    background-size: 110%;
+}
+
+.character-list .character-container .name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 5% 0;
+    text-align: center;
+    background: rgba(0, 0, 0, .5);
+    color: white;
+}
+
+/*Auto Complete Container*/
+.auto-complete-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background-color: white;
+    border: 1px solid #e3e3e3;
+    top: 100%;
+    border-top: none;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.result-row {
+    display: flex;
+    align-items: center;
+    padding: 4px 10px;
+}
+
+.result-row:hover {
+    background-color: lightskyblue;
+    cursor: pointer;
+    color: white;
+}
+
+.result-row .character-profile-pic {
+    background-position: center;
+    background-size: cover;
+    width: 45px;
+    height: 45px;
+    margin-right: 10px;
+    border-radius: 2px;
+}
+
+.error-msg {
+    padding: 10px;
+    font-weight: 300;
+    color: #c20000;
+    font-style: italic;
+    text-align: left;
+}
