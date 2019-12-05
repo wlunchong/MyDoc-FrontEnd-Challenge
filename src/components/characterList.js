@@ -5,6 +5,7 @@ import {getCharacterImageURL} from "../services";
 // Component that show list of character
 // Props
 // =====
+// list: Array. List of characters
 // onCharacterSelect: Func.  Callback when user click on character.
 // showDelete: Boolean. Whether to show delete option or not
 

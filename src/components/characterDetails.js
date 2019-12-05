@@ -11,7 +11,7 @@ import {saveCharacterAction, unsaveCharacterAction} from "../actions/viewSavedAc
 // character: Obj. Contain details of character such as id, name, picture, comics...
 // close: Func. Function that callback when user close current component
 
-class CharacterDetails extends React.Component {
+export class CharacterDetails extends React.Component {
     renderDetailsByLabel = ({label, value, isLink}, index) => {
 
         const renderExternalLink = (link) => {
@@ -32,7 +32,7 @@ class CharacterDetails extends React.Component {
         };
 
         return (
-            <div key={`${label}-${index}`}>
+            <div key={`${label}-${index}`} data-test-label={label}>
                 <div className="label">{label}</div>
                 <div className="details">
                     {Array.isArray(value) ? renderArrayList() :
