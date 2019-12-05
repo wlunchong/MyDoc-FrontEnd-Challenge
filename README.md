@@ -19,8 +19,8 @@ Test Project Code
 $ npm test
 ```
 
-# Dependency Used
-| Dependecy | Reason |
+# 3rd Party Plugin Used
+| Plugin | Reason |
 | ------ | ------ |
 | React Redux/ Redux | To stored saved characters. Easier to handle delete character.|
 | Deounce-Throttle | Enhance search performance so will call search function when user stop typing after 500ms.  |
