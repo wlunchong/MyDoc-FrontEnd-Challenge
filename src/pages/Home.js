@@ -11,7 +11,7 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            getCharactersAPI: "https://gateway.marvel.com/v1/public/characters?ts=1565922410&apikey=6a038473ffd6407750a2ea27115f7e7c&hash=1492df65a88ef98a1a279719fe509f72",
+            getCharactersAPI: "https://gateway.marvel.com/v1/public/characters?ts=1&apikey=2daa9eccd0b8234f9bcf6bdddfb59fa6&hash=6a48ab1f9189be12c854d318c422ae54",
             keyword: "",
             loading: false,
             showAutoComplete: true,
@@ -36,8 +36,7 @@ export default class Home extends React.Component {
     // promise function to call Marvel API by passing URL and keyword
     // keyword will be return with data to compare whether keyword is latest
     getCharactersList = (link, keyword) => {
-        return new Promise(async resolve => {
-            try {
+        return new Promise(async (resolve, reject) => {
                 this.toggleLoading(true);
 
                 const resp = await fetch(link);
@@ -45,28 +44,33 @@ export default class Home extends React.Component {
 
                 this.toggleLoading(false)
 
-                resolve({data: respToJSON.data.results, keyWordFromCurrentResult: keyword})
-            } catch (e) {
-                resolve({data: [], keyWordFromCurrentResult: ""})
-            }
-
+                if (resp.ok) {
+                    resolve({data: respToJSON.data.results, keyWordFromCurrentResult: keyword})
+                } else {
+                    reject(respToJSON.message)
+                }
         })
     };
 
     // function to check keyword and update relevant data conditionally
     searchCharacter = async () => {
-        const {keyword} = this.state;
-        if (!keyword) {
-            this.setKeywordAndList();
-            return
-        };
+        try {
+            const {keyword} = this.state;
+            if (!keyword) {
+                this.setKeywordAndList();
+                return
+            };
 
-        const {data, keyWordFromCurrentResult} = await this.getCharactersList(`${this.state.getCharactersAPI}&limit=18&nameStartsWith=${keyword}`, keyword);
-        if (keyWordFromCurrentResult !== this.state.keyword) {
-            return
-        };
+            const {data, keyWordFromCurrentResult} = await this.getCharactersList(`${this.state.getCharactersAPI}&limit=18&nameStartsWith=${keyword}`, keyword);
+            if (keyWordFromCurrentResult !== this.state.keyword) {
+                return
+            };
 
-        this.setKeywordAndList(keyword, data)
+            this.setKeywordAndList(keyword, data)
+        } catch (e) {
+            alert(e)
+        }
+
     };
 
     // onChangeEvent from search input
